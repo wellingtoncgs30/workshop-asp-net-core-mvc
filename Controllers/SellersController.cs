@@ -25,8 +25,9 @@ namespace SalesWebMvc.Controllers
         // GET: Sellers
         public async Task<IActionResult> Index()
         {
-            var list = _sellerService.FindAll()
-            return View(await _context.Seller.ToListAsync(), list);
+            var list = _sellerService.FindAll();
+            await _context.Seller.ToListAsync();
+            return View(list);
         }
 
         // GET: Sellers/Details/5
@@ -56,7 +57,7 @@ namespace SalesWebMvc.Controllers
         // POST: Sellers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Email,BirthDate,BaseSalary")] Seller seller)
         {
@@ -67,6 +68,14 @@ namespace SalesWebMvc.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(seller);
+        }*/
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Seller seller)
+        {
+            _sellerService.Insert(seller);
+            return RedirecToAction(nameof(Index));
         }
 
         // GET: Sellers/Edit/5
