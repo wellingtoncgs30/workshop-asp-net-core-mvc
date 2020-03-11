@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SalesWebMvc.Data;
 using SalesWebMvc.Models;
 using SalesWebMvc.Services;
+using SalesWebMvc.Models.ViewModels;
 
 namespace SalesWebMvc.Controllers
 {
@@ -15,25 +16,29 @@ namespace SalesWebMvc.Controllers
     {
         private readonly SalesWebMvcContext _context;
         private readonly SellerService _sellerService;
+        private readonly DepartmentService _departmentService;
 
-        public SellersController(SalesWebMvcContext context, SellerService sellerService)
+        public SellersController(SalesWebMvcContext context, SellerService sellerService, 
+            DepartmentService departmentService)
         {
             _context = context;
             _sellerService = sellerService;
+            _departmentService = departmentService;
         }
 
         // GET: Sellers
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var list = _sellerService.FindAll();
-            await _context.Seller.ToListAsync();
             return View(list);
         }
 
         // GET: Sellers/Create
         public IActionResult Create()
         {
-            return View();
+            var departments = _departmentService.FindAll();
+            var viewModel = new SellerFormViewModel { Departments = departments };
+            return View(viewModel);
         }
 
         // POST: Sellers/Create
