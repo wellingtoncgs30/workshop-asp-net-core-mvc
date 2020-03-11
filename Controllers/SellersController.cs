@@ -30,24 +30,6 @@ namespace SalesWebMvc.Controllers
             return View(list);
         }
 
-        // GET: Sellers/Details/5
-        public async Task<IActionResult> Details(uint? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var seller = await _context.Seller
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (seller == null)
-            {
-                return NotFound();
-            }
-
-            return View(seller);
-        }
-
         // GET: Sellers/Create
         public IActionResult Create()
         {
@@ -57,25 +39,13 @@ namespace SalesWebMvc.Controllers
         // POST: Sellers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,BirthDate,BaseSalary")] Seller seller)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(seller);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(seller);
-        }*/
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller)
         {
             _sellerService.Insert(seller);
-            return RedirecToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Sellers/Edit/5
